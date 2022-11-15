@@ -1,0 +1,355 @@
+QUESTION 1 
+
+
+// Write a C program to add an original sparse matrix with the transpose of the same matrix, 
+// then represent the output matrix in three tuple method.
+
+
+#include <stdio.h>
+int main () {
+    int i,j,m,n,row,colm,array[3][3],total=0,sparse_trans[3][3],add[3][3];
+
+    // creation of sparse matrix 
+    printf("Enter the number of rows and coloumns\n");
+    scanf("%d %d",&i,&j);
+    
+    printf("Enter the elements inside the array\n");
+    for(row=0;row<i;row++)
+    {
+          for(colm=0;colm<j;colm++)
+          {
+              scanf("%d",&array[row][colm]);
+          }
+    }
+
+    for(row=0;row<=i;row++)
+    {
+        for(colm=0;colm<=j;colm++)
+        {
+            if(array[row][colm]==0)
+              
+              {
+                  total++;
+              }
+        }
+    }
+      if(total>(row * colm)/2)
+        {
+            printf("The matrix you entered is a sparse matrix\n");
+
+        }
+            else
+            {
+                printf("The matrix you entered is not a sparse matrix\n");
+            }
+          
+        //  transpose of sparse matrix 
+// int row;
+     for(row=0; row<i; row++)
+     {
+         for(colm=0; colm<j; colm++)
+         {
+                sparse_trans[row][colm] = array[row][colm];
+         }
+     }
+
+    //  printing the elements of the sparse_trans matrix
+     
+     printf("The transpose of the sparse matrix is :\n");
+
+     for(row=0; row<i; row++)
+     {
+         for(colm=0; colm<j; colm++)
+         {
+             printf("%d",sparse_trans[colm][row]);
+              printf("\n");
+         }
+    }
+
+    // adding two matrix
+printf("Addition of two matrix is :");
+          for(row=0; row<i; row++)
+          {
+              for(colm=0; colm<j; colm++)
+              {
+               add[row][colm]= array[row][colm] + sparse_trans[colm][row];
+
+              }
+          }
+
+
+        for(row=0; row<i; row++)
+        {
+            for(colm=0; colm<j; colm++)
+            {               
+                
+             printf("%d",add[row][colm]); 
+             if(colm == j-1)
+             {
+                 printf("\n\n");
+             }
+
+            }
+        }
+
+return 0;
+}
+
+
+
+
+
+
+
+QUESTION 2 :
+
+
+// Given two sorted arrays A and B. Array A is full and array B is 
+// partially full and the number of empty slots are just enough to 
+// accommodate all elements of array A. Write one C program to merge 
+// the two sorted arrays to fill the array B without using the third 
+// array.
+
+
+#include <stdio.h>
+
+int main()
+{
+    
+    int n1,n2,n3;            
+    printf("\nEnter the size of first array ");
+    scanf("%d",&n1);
+    printf("\nEnter the size of second array ");
+    scanf("%d",&n2);
+    
+    n3=n1+n2;
+    printf("\nEnter the sorted array elements");
+    int a[n1],b[n2],c[n3];     
+    for(int i=0;i<n1;i++)      
+    {
+       scanf("%d",&a[i]);
+       c[i]=a[i];
+    }
+    int k=n1;
+    printf("\nEnter the sorted array elements");
+    for(int i=0;i<n2;i++)      
+    {
+        scanf("%d",&b[i]);
+        c[k]=b[i];
+        k++;
+    }
+    printf("\nThe merged array..\n");
+    for(int i=0;i<n3;i++)
+    printf("%d ",c[i]);        
+    
+    printf("\nAfter sorting...\n");
+    for(int i=0;i<n3;i++)        
+    {
+        int temp;
+        for(int j=i+1; j<n3 ;j++)
+        {
+            if(c[i]>c[j])
+            {
+                temp=c[i];
+                c[i]=c[j];
+                c[j]=temp;
+            }
+        }
+    }   
+    
+    for(int i=0 ; i<n3 ; i++)      
+    {
+        printf(" %d ",c[i]);
+    }
+    return 0;   
+}
+
+
+
+
+
+
+
+
+QUESTION 3 : 
+
+// WAP using switch cases to perform the following operations.
+// a) create a linked list, 
+   b) Display its elements.
+
+#include <stdlib.h>
+#include <stdio.h>
+
+void create();
+void display();
+
+struct node
+{
+    int info;
+    struct node *next;
+};
+struct node *start = NULL;
+int main()
+{
+    printf("press the following keys to perform operation:\n");
+    printf("press 1 for enter element\n");
+    printf("press 2 for display list\n");
+    printf("press 3 for exit\n");
+    int choice;
+    while (1)
+    {
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            create();
+            break;
+        case 2:
+            display();
+            break;
+
+        case 3:
+            exit(0);
+            break;
+
+        default:
+            printf("n Wrong Choice:n");
+            break;
+        }
+    }
+    return 0;
+}
+void create()
+{
+    struct node *temp, *ptr;
+    temp = (struct node *)malloc(sizeof(struct node));
+    if (temp == NULL)
+    {
+        printf("Out of Memory Space:n");
+        exit(0);
+    }
+    printf("Enter the data value for the node: ");
+    scanf("%d", &temp->info);
+    temp->next = NULL;
+    if (start == NULL)
+    {
+        start = temp;
+    }
+    else
+    {
+        ptr = start;
+        while (ptr->next != NULL)
+        {
+            ptr = ptr->next;
+        }
+        ptr->next = temp;
+    }
+}
+void display()
+{
+    struct node *ptr;
+    if (start == NULL)
+    {
+        printf("List is empty: ");
+        return;
+    }
+    else
+    {
+        ptr = start;
+        printf("The List elements are: ");
+        while (ptr != NULL)
+        {
+            printf("%d ", ptr->info);
+            ptr = ptr->next;
+        }
+        printf("\n");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+QUESTION 4 :
+
+
+// Let the number "XYZ" be represented as Z->Y->X in the linked list. If two such numbers are given in two different linked lists, 
+// then with the above representation, 
+// write a C-program to subtract the second number (represented in the second linked list) from the first number (represented in the first linked 
+// list) and store the result 
+// in the third linked list with above representation.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+        int info;
+        struct node *link;
+    }*temp,*q,*start,*sa,*sb;
+
+void createList();
+void display();
+
+int main(){
+    int data,a,b;
+    start=NULL;
+    printf("Enter 1st and 2nd Number: ");
+    scanf("%d%d",&a,&b);
+    while(a!=0){
+        int data =a%10;
+        createList(data);
+        a=a/10;
+    }
+    sa=start;
+    start=NULL;
+    while(b!=0){
+        int data =b%10;
+        createList(data);
+        b=b/10;
+    }
+    sb=start;
+    start=NULL;
+    while(sa!=NULL){
+        data =sa->info-sb->info;
+        createList(data);
+        sa=sa->link;
+        sb=sb->link;
+    }
+    display();
+}
+
+void createList(int data){
+    temp=malloc(sizeof(struct node));
+    temp->info=data;
+    temp->link=NULL;
+    if(start==NULL){
+        start=temp;
+    }
+    else{
+        q=start;
+        while(q->link!=NULL){
+            q=q->link;
+        }
+        q->link=temp;
+    }
+}
+
+void display(){
+    if(start == NULL){
+        printf("No list found");
+        return;
+    }
+    q=start;
+    while(q!=NULL){
+        printf("%d ",q->info);
+        q=q->link;
+    }
+}

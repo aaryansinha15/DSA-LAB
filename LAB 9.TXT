@@ -1,0 +1,397 @@
+QUEESTION 1
+
+ // Implement circular queue using array.
+
+#include<conio.h>
+#include<stdio.h>
+#include<stdlib.h>
+int cqueue[6];
+int front = -1, rear = -1, n=6;
+void enqueue(int val){
+    if ((front == 0 && rear == n-1) || (front == rear+1)) {
+      printf("Queue Overflow \n");
+      return;
+   }
+   if (front == -1) {
+      front = 0;
+      rear = 0;
+   }
+   else {
+      if (rear == n - 1)
+         rear = 0;
+      else
+         rear = rear + 1;
+   }
+   cqueue[rear] = val ;
+}
+void dequeue(){
+    if (front == -1) {
+       printf("Queue Underflow\n");
+      return ;
+   }
+    printf("Element deleted from queue is : %d ", cqueue[front]);
+   if (front == rear) {
+      front = -1;
+      rear = -1;
+   }
+   else {
+      if (front == n - 1)
+         front = 0;
+      else
+         front = front + 1;
+   }
+}
+ 
+void display(){
+   int f = front, r = rear;
+   if (front == -1) {
+       printf("Queue is empty");
+      return;
+   }
+   printf("Queue elements are :\n");
+   if (f <= r) {
+      while (f <= r){
+          printf(" %d ", cqueue[f]);
+         f++;
+      }
+   }
+   else {
+      while (f <= n - 1) {
+          printf(" %d ",cqueue[f]);
+         f++;
+      }
+      f = 0;
+      while (f <= r) {
+          printf(" %d ",cqueue[f]);
+         f++;
+      }
+   }
+   
+}  
+   
+int menu(){
+    int choice;
+    printf("\n 1.Insert");
+    printf("\n 2. Delete");
+    printf("\n 3. Travesre");
+    printf("\n 4. exit");
+    printf("\n Please enter your choice: \t");
+    scanf("%d",&choice);
+    return(choice);
+}
+void main(){
+    int value;
+    while(1){
+        switch(menu()){
+            case 1:
+           printf("Inputthe elements\n");
+            scanf("%d",&value);
+                enqueue(value);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("invalid choice");
+        }
+    }
+  }
+
+
+
+
+
+  QUEESTION 2
+  //Implement double-ended queue using array.
+
+  // Implement double-ended queue using array.
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#define MAX 30
+typedef struct dequeue
+{
+int data[MAX];
+int rear,front;
+}dequeue;
+void initialize(dequeue *p);
+int empty(dequeue *p);
+int full(dequeue *p);
+void enqueueR(dequeue *p,int x);
+void enqueueF(dequeue *p,int x);
+int dequeueF(dequeue *p);
+int dequeueR(dequeue *p);
+void print(dequeue *p);
+void main()
+{
+int i,x,op,n;
+dequeue q;
+initialize(&q);
+do
+{
+printf("\n1.Create\n2.Insert(rear)\n3.Insert(front)\n4.Delete(rear");
+printf("\n5.Delete(front)\n6.Print\n7.Exit\nEnter your choice:");
+scanf("%d",&op);
+switch(op)
+{
+case 1: printf("\nEnter number of elements:");
+scanf("%d",&n);
+initialize(&q);
+printf("\nEnter the data:");
+for(i=0;i<n;i++)
+{
+scanf("%d",&x);
+if(full(&q))
+{
+printf("\nQueue is full!!");
+exit(0);
+}
+enqueueR(&q,x);
+}
+break;
+case 2: printf("\nEnter element to be inserted:");
+scanf("%d",&x);
+if(full(&q))
+{
+printf("\nQueue is full!!");
+exit(0);
+}
+enqueueR(&q,x);
+break;
+case 3: printf("\nEnter the element to be inserted:");
+scanf("%d",&x);
+if(full(&q))
+{
+printf("\nQueue is full!!");
+exit(0);
+}
+enqueueF(&q,x);
+break;
+case 4: if(empty(&q))
+{
+printf("\nQueue is empty!!");
+exit(0);
+}
+x=dequeueR(&q);
+printf("\nElement deleted is %d\n",x);
+break;
+case 5: if(empty(&q))
+{
+printf("\nQueue is empty!!");
+exit(0);
+}
+x=dequeueF(&q);
+printf("\nElement deleted is %d\n",x);
+break;
+case 6: print(&q);
+break;
+default: break;
+}
+}while(op!=7);
+}
+void initialize(dequeue *P)
+{
+P->rear=-1;
+P->front=-1;
+}
+int empty(dequeue *P)
+{
+if(P->rear==-1)
+return(1);
+return(0);
+}
+int full(dequeue *P)
+{
+if((P->rear+1)%MAX==P->front)
+return(1);
+return(0);
+}
+void enqueueR(dequeue *P,int x)
+{
+if(empty(P))
+{
+P->rear=0;
+P->front=0;
+P->data[0]=x;
+}
+else
+{
+P->rear=(P->rear+1)%MAX;
+P->data[P->rear]=x;
+}
+}
+void enqueueF(dequeue *P,int x)
+{
+if(empty(P))
+{
+P->rear=0;
+P->front=0;
+P->data[0]=x;
+}
+else
+{
+P->front=(P->front-1+MAX)%MAX;
+P->data[P->front]=x;
+}
+}
+int dequeueF(dequeue *P)
+{
+int x;
+x=P->data[P->front];
+if(P->rear==P->front) //delete the last element
+initialize(P);
+else
+P->front=(P->front+1)%MAX;
+return(x);
+} 
+int dequeueR(dequeue *P)
+{
+int x;
+x=P->data[P->rear];
+if(P->rear==P->front)
+initialize(P);
+else
+P->rear=(P->rear-1+MAX)%MAX;
+return(x);
+}
+void print(dequeue *P)
+{
+if(empty(P))
+{
+printf("\nQueue is empty!!");
+exit(0);
+}
+int i;
+i=P->front;
+while(i!=P->rear)
+{
+printf("\n%d",P->data[i]);
+i=(i+1)%MAX;
+}
+printf("\n%d\n",P->data[P->rear]);
+}
+
+
+
+
+
+QUEESTION 3
+// Let a linked list consists of n number of nodes, where each node consists of an unique character that represents the grades 
+// of the students (O, E, A, B, C ), and pointer to the next node. Write the C code to group the students having the same grade 
+// in consecutive places and also finally all the nodes should be in sorting order as per their grade value.  
+// (O->O->E->E->E->A->B->B->C->C->C)
+
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node{
+char ch;
+int priority;
+struct node *next;
+}*head,*temp,*newnode;
+
+char grade;
+
+void insert() {
+    newnode = (struct node *) malloc(sizeof(struct node));
+  printf("\nEnter Grade(O,E,A,B,C): ");
+  scanf(" %c", &newnode->ch);
+  newnode->next = 0;
+ switch (newnode->ch){
+ case 'O':
+     newnode->priority=5;
+     break;
+ case 'E': newnode->priority=4;
+     break;
+ case 'A': newnode->priority=3;
+    break;
+ case 'B': newnode->priority=2;
+    break;
+ case 'C': newnode->priority=1;
+    break;
+ }
+
+  if (head==NULL) {
+    head = temp=newnode;
+  }
+  else {
+    temp->next = newnode;
+    temp=newnode;
+  }
+}
+
+void display() {
+  temp = head;
+  printf("\nDisplay Linked List : \n");
+  while (temp != NULL) {
+    printf("%c ",temp->ch);
+    temp = temp -> next;
+  }
+}
+
+void swap(struct node *a,struct node *b){
+                char g=b->ch;
+                b->ch=a->ch;
+                a->ch=g;
+                
+                int grade=b->priority;
+                b->priority=a->priority;
+                a->priority=grade;
+}
+
+void sort()
+{
+    int swapped,i;
+
+    struct node *q;
+    struct node *p=NULL;
+            do{
+                swapped=0;
+                q=head;
+                while(q->next!=p){
+                    if(q->priority < q->next->priority){
+                        swap(q,q->next);
+                        swapped=1;
+                    }
+                    q=q->next;
+                }
+                p=q;
+            }
+            while(swapped);
+            printf("SORTED");
+}
+
+int main(){
+int a,choice;
+for(int i=0;i>a;i++){
+    insert();
+}
+while(1){
+printf("\n\n1. Insert\n");
+printf("2. Sort\n");
+printf("3. Display\n");
+printf("4, Exit\n");
+printf("Enter Your Choice: ");
+scanf("%d",&choice);
+switch (choice){
+case 1:
+    insert();
+    break;
+case 2:
+   sort();
+    break;
+case 3:
+    display();
+    break;
+case 4:
+    exit(0);
+}
+}
+return 0;
+}

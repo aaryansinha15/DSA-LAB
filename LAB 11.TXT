@@ -1,0 +1,193 @@
+NAME-AARYAN SINHAN 
+ROLL-20051796
+SUBJECT- DSA
+SECTION- B26 SLOT 2
+BRANCH-CSE
+
+
+QUESTION
+Implement BST and its operations.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    struct node *lchild;
+    int info;
+    struct node *rchild;
+};
+
+struct node *insert(struct node *ptr, int ikey)
+{
+    if (ptr == NULL)
+    {
+        ptr = (struct node *)malloc(sizeof(struct node));
+        ptr->info = ikey;
+        ptr->lchild = NULL;
+        ptr->rchild = NULL;
+    }
+    else if (ikey < ptr->info)
+        ptr->lchild = insert(ptr->lchild, ikey);
+    else if (ikey > ptr->info)
+        ptr->rchild = insert(ptr->rchild, ikey);
+    else
+        printf("Duplicate key\n");
+    return ptr;
+}
+
+struct node *search(struct node *ptr, int skey)
+{
+    if (ptr == NULL)
+    {
+        // printf("key not found");
+        return NULL;
+    }
+    else if (skey < ptr->info)
+        return search(ptr->lchild, skey);
+    else if (skey > ptr->info)
+        return search(ptr->rchild, skey);
+    else
+        return ptr;
+}
+
+void preorder(struct node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    printf("%d ", ptr->info);
+    preorder(ptr->lchild);
+    preorder(ptr->rchild);
+}
+
+void inorder(struct node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    inorder(ptr->lchild);
+    printf("%d ", ptr->info);
+    inorder(ptr->rchild);
+}
+
+void postorder(struct node *ptr)
+{
+    if (ptr == NULL)
+        return;
+    postorder(ptr->lchild);
+    postorder(ptr->rchild);
+    printf("%d ", ptr->info);
+}
+
+int getRightMin(struct node *root)
+{
+    struct node *temp = root;
+
+    while(temp->lchild != NULL){ temp = temp->lchild;}
+
+    return temp->info;
+}
+struct node *del(struct node *root, int val)
+{
+    if(root == NULL)
+        return NULL;
+    if(root->info < val)
+        root->rchild = del(root->rchild,val);
+    else if(root->info > val)
+        root->lchild = del(root->lchild,val);
+    else
+    {
+        if(root->lchild == NULL && root->rchild == NULL)
+        {
+            free(root);
+            return NULL;
+        }
+        else if(root->lchild == NULL)
+        {
+            struct node *temp = root->rchild;
+            free(root);
+            return temp;
+        }
+        else if(root->rchild == NULL)
+        {
+            struct node *temp = root->lchild;
+            free(root);
+            return temp;
+        }
+        else
+        {
+            int rightMin = getRightMin(root->rchild);
+            root->info = rightMin;
+            root->rchild = del(root->rchild,rightMin);
+        }
+
+    }
+    return root;
+}
+
+
+int minDepth(struct node* node)
+{
+    if (node == NULL)
+        return -1;
+    else {
+        int lDepth = minDepth(node->left);
+        int rDepth = minDepth(node->right);
+ 
+        /* use the larger one */
+        if (lDepth < rDepth)
+            return (lDepth + 1);
+        else
+            return (rDepth + 1);
+    }
+}
+
+int main()
+{
+    struct node *root = NULL, *ptr;
+    int k;
+    while (1)
+    {
+        printf("\n-----Menu-----\n");
+        printf("1. Insert Key\n2. Pre order traversal\n3. In-order traversal\n4. Post-order traversal\n5. Search key\n6. Delete key\n7. Exit\n");
+        printf("Enter Choice: ");
+        int choice;
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the key to be inserted: ");
+            scanf("%d", &k);
+            root = insert(root, k);
+            break;
+        case 2:
+            preorder(root);
+            break;
+        case 3:
+            inorder(root);
+            break;
+        case 4:
+            postorder(root);
+            break;
+        case 5:
+            printf("Enter the key to be searched: ");
+            scanf("%d", &k);
+            ptr = search(root, k);
+            if (ptr == NULL)
+                printf("Key not found");
+            else
+                printf("Key is present");
+            break;
+        case 6:
+            printf("Enter the key to be deleted: ");
+            scanf("%d", &k);
+            ptr = del(root, k);
+            break;
+        case 7:
+            exit(0);
+        default:
+            printf("Enter valid choice");
+        }
+    }
+
+    return 0;
+}

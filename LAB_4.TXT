@@ -1,0 +1,577 @@
+QUESTION 1
+
+// Implement the following operations on a single linked list using C.
+// Create
+// traverse
+// Insert
+// Delete
+// reverse
+#include <stdio.h>
+#include<stdlib.h>
+struct node{
+    int info;
+    struct node *link;
+}*start;
+void createlinklist(int data);
+void traverse();
+void delete(int data);
+void insert_beg(int data);
+void insert_after_pos(int data,int pos);
+void reverse();
+void main()
+{
+    int data,n,i,element,element1,ch,pos;
+    printf("ENTER 1 FOR CREATING LINKED LIST\nENTER 2 TO DISPLAY LINKED LIST\nENTER 3 FOR DELETE\nENTER 4 FOR INSERTING NODE IN FIRST\nENTER 5 FOR INSERTING NODE AFTER BEGINNING\nENTER 6 REVERSING THE ELEMENTS\nENTER 7 TO EXIT\n");
+   while(1)
+   {
+    printf("Enter your choice");
+    scanf("%d",&ch);
+    switch(ch)
+    {
+    case 1:
+    printf("Enter the number of nodes :");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        printf("Enter data of node %d:",i+1);
+        scanf("%d",&data);
+        createlinklist(data);
+    }
+    break;
+    case 2:
+traverse();
+break;
+case 3:
+ printf("Enter the element you want to delete");
+        scanf("%d",&element);
+            delete(element);
+            traverse();
+            break;
+            case 4:
+            printf("Enter the element to enter in first :");
+            scanf("%d",&element);
+            insert_beg(element);
+            traverse();
+            break;
+            case 5:
+            printf("Enter the element you want to insert:");
+            scanf("%d",&element1);
+            printf("Enter the position you want to enter element after:");
+            scanf("%d",&pos);
+            insert_after_pos(element1,pos);
+            traverse();
+            break;
+            case 6:
+            reverse();
+            traverse();
+            break;
+            case 7:
+            exit;
+            return;
+}
+}   }
+void createlinklist(int data)
+{
+    struct node *temp,*q;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->info=data;
+    temp->link=NULL;
+    
+    if(start==NULL)
+    {
+        start=temp;
+    }
+    else
+    {
+        q=start;
+        
+        while(q->link!=NULL)
+        {
+            q=q->link;
+        
+        }
+        q->link=temp;
+    }
+}
+void traverse()
+{
+    struct node *q;
+    if(start==NULL)
+    {
+        printf("Link list is empty");
+        return;
+    }
+    q=start;
+    while(q!=NULL)
+    {
+    printf("node is %d \n",q->info);
+     q=q->link;
+    }
+}
+void delete(int data)
+{
+    struct node *temp,*q;
+     temp=(struct node*)malloc(sizeof(struct node));
+    if(start->info==data)
+    {
+        temp=start;
+        start=start->link;
+        free(temp);
+        return;
+    }
+    q=start;
+    
+    while(q->link->link!=NULL)
+    {
+        if(q->link->info==data)
+        {
+            temp=q->link;
+            q->link=temp->link;
+            free(temp);
+            return;
+        }
+        q=q->link;
+    }
+    if(q->link->info==data)
+        {
+            temp=q->link;
+            free(temp);
+            q->link=NULL;
+            return;
+}
+}
+void insert_beg(int data)
+{
+    struct node *temp;
+    temp=malloc(sizeof(struct node));
+    temp->info=data;
+    temp->link=start;
+    start=temp;
+}
+void insert_after_pos(int data,int pos)
+{
+    struct node *temp,*q;
+    int i;
+    q=start;
+    for(i=1;i<pos;i++)
+    {
+    q=q->link;
+    }
+     temp=malloc(sizeof(struct node));
+    temp->info=data;
+    temp->link=q->link;
+    q->link=temp;
+    
+}
+void reverse()
+{
+    struct node *p1,*p2,*p3;
+    p1=start;
+    p2=p1->link;
+    p3=p3->link;
+    p1->link=NULL;
+    p2->link=p1;
+    while(p3!=NULL)
+    {
+        p1=p2;
+        p2=p3;
+        p3=p3->link;
+        p2->link=p1;
+    }
+    start=p2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 2 
+
+Implement the following operations on a circular linked list using C.
+Create
+Insert
+Delete
+traverse
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+struct node
+{
+    int data;
+    struct node *link;
+};
+ 
+struct node *last = NULL, *temp, *temp1, *temp2;
+ 
+void create();
+void ins_at_beg();
+void ins_at_pos();
+void del_at_beg();
+void del_at_pos();
+void traverse();
+
+ 
+void main()
+{
+    int ch;
+ 
+    printf("\n1.Creation \n2.Insertion at beginning \n3.Insertion at remaining");
+    printf("\n4.Deletion at beginning \n5.Deletion at remaining \n6.traverse");
+    
+    while (1)
+    {
+        printf("\n Enter your choice:");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+        case 1:
+            create(); 
+            break;
+        case 2:
+            ins_at_beg(); 
+            break;
+        case 3:
+            ins_at_pos(); 
+            break;
+        case 4:
+            del_at_beg(); 
+            break;
+        case 5:
+            del_at_pos();
+            break;
+        case 6:
+            traverse(); 
+            break;
+        default:
+            exit(0);
+        }
+    }
+}
+ 
+void create()
+{
+    int c;
+ 
+    temp = (struct node*)malloc(sizeof(struct node));
+    printf("\n Enter the data:");
+    scanf("%d", &temp->data);
+    temp->link = temp;
+    last = temp;
+    printf("\n If you wish to continue press 1 otherwise 0:");
+    scanf("%d", &c);
+    while (c != 0)
+    {
+        temp1 = (struct node*)malloc(sizeof(struct node));
+        printf("\n Enter the data:");
+        scanf("%d", &temp1->data);
+        temp->link = temp1;
+        temp1->link = last;
+        temp = temp1;
+        printf("\n If you wish to continue press 1 otherwise 0:");
+        scanf("%d", &c); 
+    }
+}
+ 
+
+ 
+void ins_at_beg()
+{
+    temp = last;
+    temp1 = (struct node*)malloc(sizeof(struct node));
+    printf("\n Enter the data:");
+    scanf("%d", &temp1->data);
+    while (temp->link != last)
+    {
+        temp = temp->link;
+    }
+    temp->link = temp1;
+    temp1->link = last;
+    last = temp1;
+}
+ 
+ 
+void ins_at_pos()
+{
+    struct node *ptr;
+    int c = 1, pos, count = 1;
+ 
+    temp1 = (struct node*)malloc(sizeof(struct node));
+    if (last == NULL)
+    {
+        printf("cannot enter an element at this place");
+    }
+    printf("\n Enter the data:");
+    scanf("%d", &temp1->data);
+    printf("\n Enter the position to be inserted:");
+    scanf("%d", &pos);
+    temp = last;
+    ptr = last;
+    while (ptr->link != last)
+    {
+        count++;
+        ptr = ptr->link;
+    }
+    count++;
+    if (pos > count)
+    {
+        printf("OUT OF BOUND");
+        return;
+    }
+    while (c < pos)
+    {
+        temp2 = temp;
+        temp = temp->link;
+        c++;
+    }
+    temp1->link = temp;
+    temp2->link = temp1;
+}
+ 
+ 
+void del_at_beg()
+{
+    if (last == NULL) 
+        printf("\n List is empty");
+    else
+    {
+        temp = last;
+        temp1 = last;
+        while (temp->link !=  last)
+        {
+            temp = temp->link;
+        }
+        last = temp1->link;
+        temp->link = last;
+        free(temp1);
+    }
+}
+ 
+ 
+void del_at_pos()
+{
+    if (last == NULL)
+        printf("\n List is empty");
+    else
+    {
+        int c = 1, pos;
+        printf("\n Enter the position to be deleted:");
+        scanf("%d", &pos);
+        temp = last;
+        while (c < pos)
+        {
+            temp1 = temp;
+            temp = temp->link;
+            c++;
+        }
+        temp1->link = temp->link;
+        free(temp);
+    }
+}
+ 
+ 
+void traverse()
+{
+    if (last == NULL)
+        printf("\n List is empty");
+    else
+    {
+        temp = last;
+        while (temp->link !=  last)
+        { 
+            printf("%d->", temp->data);
+            temp = temp->link;
+        }
+        printf("%d", temp->data);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+QUESTION 3 
+
+// Write the C code to delete all the nodes from the single linked list which are
+// divisible by a given number k. (The INFO part of the node must be divisible by k)
+
+
+#include<stdlib.h>
+#include<stdio.h>
+struct node{
+    int info;
+    struct node *link;
+}*start;
+void createlinklist(int data);
+void display(int k);
+
+void main()
+{
+    int data,n,i,k;
+    start=NULL;
+ 
+    printf("Enter thr num of nodes :");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        printf("Enter the node number %d :",i+1);
+        scanf("%d",&data);
+        createlinklist(data);
+    }
+       printf("Enter the number you want divisible of :");
+       scanf("%d",&k);
+       display(k);
+}
+
+void createlinklist(int data)
+{
+    struct node *temp,*q;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->info=data;
+    temp->link=NULL;
+    
+    if(start==NULL)
+    {
+        start=temp;
+    }
+    else
+    {
+        q=start;
+        
+        while(q->link!=NULL)
+        {
+            q=q->link;
+        
+        }
+        q->link=temp;
+    }
+}
+void display(int k)
+{
+    struct node *q;
+    if(start==NULL)
+    {
+        printf("Link list is empty");
+        return;
+    }
+    q=start;
+    while(q!=NULL)
+    {
+        if((q->info)%k!=0)
+        {
+   printf("Nodes after deletion %d ",q->info);
+        }
+          q=q->link;
+    }
+}
+
+
+
+
+
+
+
+QUESTION 4 
+
+Let a single linked list consists of positive integers 
+in such a way that the summation of node values (INFO part) 
+in some continuous nodesmatches to the value in the next node. 
+For example, the linked list consists of values 2, 1, 3, 5, 3, 9, 17, 2, 4, 6, where 2+1=3 
+{i.e. summation of 1st and 2nd node matches to 3rd node}, 5+3+9=17 and so on.
+ Here, no. of summation groups are 2 and values in each summation group are {2, 1}, {5, 3, 9}. 
+ Write a C code to display the no. of summation groups and the values in each summation group.
+
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+typedef struct node node;
+node *head=NULL, *ptr, *n;
+int main()
+{
+    char ch;
+    int sum=0;
+    do
+    {
+        n= (node*)malloc(sizeof(node));
+        printf("DATA: ");
+        scanf("%d", &n->data);
+        n->next=NULL;
+        if(head==NULL)
+        ptr=head=n;
+        else
+        {
+            ptr=head;
+            while(ptr->next!=NULL)
+            ptr=ptr->next;
+            ptr->next=n;
+        }
+        printf("Continue? Y/N: ");
+        scanf(" %c", &ch);
+    } while(ch=='Y' || ch=='y');
+    ptr=head;
+    while(ptr!=NULL)
+    {
+        printf("%d ", ptr->data);
+        ptr=ptr->next;
+    }
+    ptr=head;
+    node *pr=head;
+    printf("\n");
+    int c=0;
+    while(ptr->next!=NULL)
+    {
+        if(sum==ptr->data)
+        {
+            //printf("%d ", ptr->data);
+            while(pr!=ptr)
+            {
+                printf("%d ", pr->data);
+                pr=pr->next;
+            }
+            printf("\n");
+            sum=0;
+            c++;
+            pr=ptr->next;
+            ptr=ptr->next;
+        }
+        sum= sum+ ptr->data;
+        ptr=ptr->next;
+    }
+    if(sum==ptr->data)
+    {
+        //printf("%d ", ptr->data);
+        while(pr!=ptr)
+        {
+            printf("%d ", pr->data);
+            pr=pr->next;
+        }
+        c++;
+    }
+    printf("\nNo. of summation groups: %d", c);
+}
+

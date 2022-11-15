@@ -1,0 +1,335 @@
+LAB 8 
+
+QUESTION 1 
+// Given a Queue consisting of first n natural numbers (in random order). The task is to check whether the given Queue elements can be 
+//arranged in increasing order in another Queue using a stack. The operations allowed are: 
+// Push and Pop elements in the stack 
+// Delete  from the given Queue. 
+// Insert into another Queue.
+// Examples :
+//  Input : Queue[] = { 5, 1, 2, 3, 4 }; Output : Yes 
+// Delete the first element of the given Queue i.e 5. 
+// Push 5 into the stack. 
+// Now, Delete all the elements of the given Queue and Insert them to the second Queue. 
+// Now, pop element 5 from the stack and Insert it to the second Queue. 
+//   Input : Queue[] = { 5, 1, 2, 6, 3, 4 }; Output : No 
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#define SI 100
+
+typedef long long ll;
+
+struct node
+{
+	int info;
+	struct node* link;
+}*fin = NULL, * rin = NULL, *fout = NULL, *rout = NULL, *top = NULL;
+
+void stack_push(int data)
+{
+	struct node* tmp = (struct node*)malloc(sizeof(struct node));
+	tmp->info = data;
+	tmp->link = top;
+	top = tmp;
+}
+
+int stack_pop()
+{
+	struct node* tmp;
+	int ret;
+	if (top == NULL)
+		printf("Underflow");
+	else
+	{
+		tmp = top;
+		top = top->link;
+		ret = tmp->info;
+		free(tmp);
+	}
+	return ret;
+}
+
+void insert(int data)
+{
+	struct node* temp = (struct node*)malloc(sizeof(struct node));
+	temp->info = data;
+	temp->link = NULL;
+	if (fin == NULL)
+		fin = temp;
+	else
+		rin->link = temp;
+	rin = temp;
+}
+
+
+void insert_out(int data)
+{
+	struct node* temp = (struct node*)malloc(sizeof(struct node));
+	temp->info = data;
+	temp->link = NULL;
+	if (fout == NULL)
+		fout = temp;
+	else
+		rout->link = temp;
+	rout = temp;
+}
+
+int delete_()
+{
+	struct node* temp;
+	int ret;
+	if (fin == NULL)
+		printf("underflow\n");
+	else
+	{
+		temp = fin;
+		fin = fin->link;
+		ret = temp->info;
+		free(temp);
+	}
+	return ret;
+}
+
+void traverse()
+{
+	struct node* q;
+	q = fout;
+	if (fout == NULL)
+		printf("Queue is empty\n");
+	else
+	{
+		while (q != NULL)
+		{
+			printf("%d -> ", q->info);
+			q = q->link;
+		}
+		printf("\n");
+	}
+}
+
+void solve();
+
+int check(int min, int n)
+{
+	int trigger = 0;
+	for (int i = 0; i < n; i++)
+	{
+		int start = delete_();
+		if (start == min)
+		{
+			insert_out(start);
+			min++;
+		}
+		else
+		{
+			if (top == NULL)
+			{
+				stack_push(start);
+			}
+			else if (top != NULL && top->info < start)
+				return 0;
+			else
+				stack_push(start);
+		}
+		int ins;
+		while (top != NULL && top->info == min)
+		{
+			ins = stack_pop();
+			insert_out(ins);
+			min++;
+		}
+	}
+	if (min-1 == n && top == NULL)
+		return 1;
+	return 0;
+}
+
+void solve()
+{
+	int n;
+	printf("No. of elements: ");
+	scanf("%d", &n);
+	int d;
+	int min = INT_MAX;
+	int max = INT_MIN;
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", &d);
+		if (d < min)
+			min = d;
+		if (d > max)
+			max = d;
+		insert(d);
+	}
+	if (check(min, n))
+	{
+		printf("YES\n");
+		traverse();
+	}
+	else
+		printf("NO\n");
+}
+
+int main(void)
+{
+	int t;
+	printf("Test case: ");
+	scanf("%d", &t);
+	for (int i = 0; i < t; i++)
+		solve();
+}
+
+
+
+
+
+QUESTION 2
+
+//  Write a C code to add two polynomials using array.
+
+#include<stdio.h>
+void main()
+{
+int poly1[6][2],poly2[6][2],term1,term2,match,proceed,i,j;
+printf("Enter the number of terms in first polynomial : ");
+scanf("%d",&term1);
+printf("Enter the number of terms in second polynomial : ");
+scanf("%d",&term2);
+printf("Enter the coeff and expo of the first polynomial:\n");
+for(i=0;i<term1;i++)
+{
+scanf("%d %d",&poly1[i][0],&poly1[i][1]);
+}
+printf("Enter the coeff and expo of the second polynomial:\n");
+for(i=0;i<term2;i++)
+{
+scanf("%d %d",&poly2[i][0],&poly2[i][1]);
+}
+printf("The resultant polynomial after addition :\n");
+for(i=0;i<term1;i++)
+{
+match=0;
+for(j=0;j<term2;j++)
+{
+if(match==0)
+if(poly1[i][1]==poly2[j][1])
+{
+printf("%dx^%d+",(poly1[i][0]+poly2[j][0]), poly1[i][1]);
+match=1;
+}
+}
+}
+for(i=0;i<term1;i++)
+{
+proceed=1;
+for(j=0;j<term2;j++)
+{
+if(proceed==1)
+if(poly1[i][1]!=poly2[j][1])
+proceed=1;
+else
+proceed=0;
+}
+if(proceed==1)
+printf("%dx^%d+",poly1[i][0],poly1[i][1]);
+}
+for(i=0;i<term2;i++)
+{
+proceed=1;
+for(j=0;j<term1;j++)
+{
+if(proceed==1)
+if(poly2[i][1]!=poly1[j][1])
+proceed=1;
+else
+proceed=0;
+}
+if(proceed==1)
+printf("%dx^%d+",poly2[i][0],poly2[i][1]);
+}
+}
+
+
+
+
+QUESTION 3 :
+
+//  Write a C code to replace every element in a linked list with the next greatest element present in 
+// // the same list.
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+typedef struct node node;
+node *head=NULL, *n;
+int main()
+{
+    node *ptr;
+    int size;
+    printf("List size= ");
+    scanf("%d", &size);
+    if(size==0)
+    {
+        printf("EMPTY");
+        exit(1);
+    }
+    for(int i=0;i<size;i++)
+    {
+        n=(node*)malloc(sizeof(node));
+        printf("Data: ");
+        scanf("%d", &n->data);
+        n->next=NULL;
+        if(head==NULL)
+        head=n;
+        else
+        {
+            ptr=head;
+            while(ptr->next!=NULL)
+            ptr=ptr->next;
+            ptr->next=n;
+        }
+    }
+    ptr=head;
+    while(ptr!=NULL)
+    {
+        printf("%d ", ptr->data);
+        ptr=ptr->next;
+    }
+    printf("\n");
+    ptr=head;
+    node *pr;
+    int c=0;
+    while(ptr->next!=NULL)
+    {
+        c=0;
+        pr=ptr->next;
+        while(pr!=NULL)
+        {
+            if(pr->data>ptr->data)
+            {
+                c++;
+                ptr->data=pr->data;
+                break;
+            }
+            pr=pr->next;
+        }
+        if(c==0)
+        ptr->data=-1;
+        ptr=ptr->next;
+    }
+    ptr->data=-1;
+    ptr=head;
+    while(ptr!=NULL)
+    {
+        printf("%d ", ptr->data);
+        ptr=ptr->next;
+    }
+}

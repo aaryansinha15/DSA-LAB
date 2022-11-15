@@ -1,0 +1,447 @@
+
+
+QUESTION 1 
+#include <stdio.h>
+#include <stdlib.h>
+struct node{
+    int data;
+    struct node *pre,*nxt;
+};
+struct node *head=0;
+void create(int n);
+void dis();
+void delet();
+
+int main()
+{ int n;
+printf("enter the no.of node:");
+scanf("%d",&n);
+create(n);
+dis();
+delet();
+
+    return 0;
+}
+void create(int n){
+    int i;
+    struct node *new,*q;
+    for(i=0;i<n;i++){
+     new=(struct node *)malloc(sizeof(struct node));  
+ printf("enter the data%d:",i+1);
+ scanf("%d",&new->data);
+ new->pre=0;
+ new->nxt=0;
+ if(head==0)
+ head=q=new;
+ else{
+     q->nxt=new;
+     new->pre=q;
+     q=q->nxt;
+ }
+}}
+void delet(){
+    printf("\nafter deleting the node that is divisibel by 7:\n");
+    struct node *q;
+    q=head;
+    while(q!=0){
+      /**  printf("%d ",q->data);
+        q=q->nxt;**/
+   if(q->data%7==0){
+      q=q->nxt;  
+   }
+   else{
+     printf("%d ",q->data);
+        q=q->nxt;  
+   }}}
+ void dis(){
+    struct node *q;
+    q=head;
+    while(q!=0){
+        printf("%d ",q->data);
+        q=q->nxt;
+    }
+}
+
+
+
+
+
+QUESTION 2
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+int stack[SIZE], element, top = -1;
+
+void push();
+void pop();
+void traverse(int arr[], int index);
+
+int main()
+{
+	int choice;
+	while (1)
+	{
+		printf("Options :\n1. Push\n2. Pop\n3. Traverse\n4. Exit\nEnter choice : ");
+		scanf("%d", &choice);
+		switch (choice)
+		{
+		case 1:
+			push();
+			break;
+		case 2:
+			pop();
+			break;
+		case 3:
+			traverse(stack, top);
+			break;
+		case 4:
+			exit(1);
+		default:
+			printf("Wrong choice!");
+		}
+	}
+	return 0;
+}
+
+void push()
+{
+	if (top == SIZE - 1)
+	{
+		printf("Overflow");
+		return;
+	}
+	else
+	{
+		printf("Enter data : ");
+		scanf("%d", &element);
+		top++;
+		stack[top] = element;
+	}
+}
+
+void pop()
+{
+	if (top == -1)
+	{
+		printf("Underflow");
+		return;
+	}
+	else
+	{
+		printf("The deleted element is %d", stack[top]);
+		top--;
+	}
+}
+
+void traverse(int arr[], int index)
+{
+	if (index < 0)
+	{
+		printf("\n");
+		return;
+	}
+	printf("%d -> ", arr[index]);
+	traverse(arr, index - 1);
+}
+
+
+
+
+
+QUESTION 3 
+
+#define SIZE 50 /* Size of Stack */
+#include <ctype.h>
+#include <stdio.h>
+
+char s[SIZE];
+int top = -1; /* Global declarations */
+
+/* Function to remove spaces from given string */
+void RemoveSpaces(char* source) {
+ char* i = source;
+ char* j = source;
+ while(*j != 0) {
+ *i = *j++;
+ if(*i != ' ')
+ i++;
+ }
+ *i = 0;
+}
+
+/* Function for PUSH operation */
+void push(char elem) { 
+ s[++top] = elem;
+}
+
+/* Function for POP operation */
+char pop() { 
+ return (s[top--]);
+}
+
+/* Function for precedence */
+int pr(char elem) { 
+ switch (elem) {
+ case '#':
+ return 0;
+ case '(':
+ return 1;
+ case '+':
+ case '-':
+ return 2;
+ case '*':
+ case '/':
+ return 3;
+ }
+}
+
+/*
+* Function to convert from infix to postfix expression
+*/
+void infix_to_postfix(char *infix, char *postfix) {
+ char ch, elem;
+ int i = 0, k = 0;
+ 
+ RemoveSpaces(infix);
+ push('#');
+ 
+ while ((ch = infix[i++]) != '\n') {
+ if (ch == '(')
+ push(ch);
+ else if (isalnum(ch))
+ postfix[k++] = ch;
+ else if (ch == ')') {
+ while (s[top] != '(')
+ postfix[k++] = pop();
+ elem = pop(); /* Remove ( */
+ } else { /* Operator */
+ while (pr(s[top]) >= pr(ch))
+ postfix[k++] = pop();
+ push(ch);
+ }
+ }
+ 
+ while (s[top] != '#') /* Pop from stack till empty */
+ postfix[k++] = pop();
+ 
+ postfix[k] = 0; /* Make postfix as valid string */
+}
+
+/*
+* Function to evaluate a postfix expression
+*/
+int eval_postfix(char *postfix) {
+ char ch;
+ int i = 0, op1, op2;
+ while((ch = postfix[i++]) != 0) {
+ if(isdigit(ch)) 
+ push(ch-'0'); /* Push the operand */
+ else { /* Operator,pop two operands */
+ op2 = pop();
+ op1 = pop();
+ switch(ch) {
+ case '+' : push(op1+op2); 
+ break;
+ case '-' : push(op1-op2); 
+ break;
+ case '*' : push(op1*op2);
+ break;
+ case '/' : push(op1/op2);
+ break;
+ }
+ }
+ }
+ return s[top];
+}
+
+void main() { /* Main Program */
+ 
+ char infx[50], pofx[50];
+ printf("\nInput the infix expression: ");
+ fgets(infx, 50, stdin);
+ 
+ infix_to_postfix(infx, pofx);
+
+ printf("\nGiven Infix Expression: %sPostfix Expression: %s", infx, pofx);
+ top = -1;
+ printf("\nResult of evaluation of postfix expression : %d", eval_postfix(pofx));
+}
+
+
+
+
+
+QUESTION 4 :
+
+#include<stdio.h>
+int main()
+{
+    int a=0,d=0,x=0,y=0,r,c,k=1;
+    printf("Enter the no.of rows of the matrix\n");
+    scanf("%d",&r);
+    printf("Enter the no.of column of the matrix\n");
+    scanf("%d",&c);
+    
+    int s[r][c],i,j,s1[r][c],nz=0;
+    printf("Enter the elements of the sparse matrix\n");
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            scanf("%d",&s[i][j]);
+        }
+    }
+    printf("The sparse matrix is\n");
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            printf("%d\t",s[i][j]);
+            if(s[i][j]!=0)
+            nz++;
+        }
+        printf("\n");
+    }
+    int r1=nz+1;
+    int b[r1][3];
+    b[0][0]=r;
+    b[0][1]=c;
+    b[0][2]=nz;
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            if(s[i][j]!=0)
+            {
+                b[k][0]=i;
+                b[k][1]=j;
+                b[k][2]=s[i][j];
+                k++;
+            }
+            
+        }
+    }
+    printf("Three tuple matrix is\n");
+    for(i=0;i<r1;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            printf("%d\t",b[i][j]);
+        }
+        printf("\n");
+    }
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            s1[i][j]=s[i][j];
+        }
+    }
+    for(i=r-1;i>=0;i--)
+    {
+        x=0;
+        for(j=0;j<c;j++)
+        {
+            if(s1[i][j]==0)
+            x++;
+        }
+        if(x==c)
+        a++;
+    }
+    for(i=c-1;i>=0;i--)
+    {
+        y=0;
+        for(j=0;j<r;j++)
+        {
+            if(s1[j][i]==0)
+            y++;
+        }
+        if(y==r)
+        d++;
+    }
+    int p=0,q=0;
+    r=r-a;
+    c=c-d;
+    p=r;
+    q=c;
+    nz=0;
+    printf("Reduced Matrix is:\n");
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            printf("%d\t",s1[i][j]);
+            if(s1[i][j]!=0)
+            nz++;
+        }
+        printf("\n");
+    }
+    k=1;
+    r1=nz+1;
+    int z[r1][3];
+    z[0][0]=r;
+    z[0][1]=c;
+    z[0][2]=nz;
+    for(i=0;i<r;i++)
+    {
+        for(j=0;j<c;j++)
+        {
+            if(s1[i][j]!=0)
+            {
+                z[k][0]=i;
+                z[k][1]=j;
+                z[k][2]=s1[i][j];
+                k++;
+            }
+            
+        }
+    }
+    printf("Reduced three tuple matrix is\n");
+    for(i=0;i<r1;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            printf("%d\t",z[i][j]);
+        }
+        printf("\n");
+    }
+    int e[r1][3];
+    e[0][0]=z[0][0];
+    e[0][1]=z[0][1];
+    e[0][2]=z[0][2];
+    for(i=1;i<r1;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            if(b[i][j]==z[i][j])
+            e[i][j]=z[i][j];
+            
+        }
+        e[i][2]=2*e[i][2];
+    }
+    printf("Addition of the two three tuple matrix is:\n");
+    for(i=0;i<r1;i++)
+    {
+        for(j=0;j<3;j++)
+        {
+            printf("%d\t",e[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
